@@ -1,0 +1,28 @@
+﻿@page "/przedmioty/{name}"
+@inject IPrzedmiotyService PrzedmiotyService
+
+<PageTitle>@item.Nazwa</PageTitle>
+<h3>@item.Nazwa</h3>
+
+<br />
+
+<dev>
+	<h3>@item.Ikona</h3>
+	<h3>@item.Nazwa</h3>
+	<h3>@item.Statystyki</h3>
+	<h3>@item.Cena</h3>
+	<h3>@item.WartoscSprzedazy</h3>
+</dev>
+
+@code
+{
+	[Parameter]
+	public string? name { get; set; }
+
+	Przedmioty item = new Przedmioty();
+
+	protected override async Task OnParametersSetAsync()
+	{
+		item = await PrzedmiotyService.GetSingleItem(name);
+	}
+}

@@ -1,0 +1,54 @@
+﻿@page "/przedmioty"
+@inject IPrzedmiotyService PrzedmiotyService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Przedmioty</PageTitle>
+<h3>Przedmioty</h3>
+
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Ikona</th>
+			<th>Nazwa</th>
+			<th>Cena</th>
+			<th>Wartość sprzedaży</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in PrzedmiotyService.Items)
+		{
+			<tr>
+				<img src="@item.Ikona" width="60px" height="60px" alt="@item.Nazwa" />
+				<td width="250px">@item.Nazwa</td>
+				<td width="250px">@item.Cena</td>
+				<td>@item.WartoscSprzedazy</td>
+				<td>
+					<button class="btn btn-primary" @onclick="(() => ShowItem(item.Nazwa))"><i class="oi oi-chevron-right"></i></button>
+				</td>
+				<td>
+					<button class="btn btn-primary" @onclick="(() => ShowEditItem(item.Nazwa))"><i class="oi oi-pencil"></i></button>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+
+@code
+{
+	protected override async Task OnInitializedAsync()
+	{
+		await PrzedmiotyService.GetItems();
+	}
+
+	void ShowItem(string Name)
+	{
+		NavigationManager.NavigateTo($"przedmioty/{Name}");
+	}
+
+	void ShowEditItem(string Name)
+	{
+		NavigationManager.NavigateTo($"przedmioty/edit/{Name}");
+	}
+}

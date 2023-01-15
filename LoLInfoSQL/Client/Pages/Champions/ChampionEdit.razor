@@ -1,0 +1,123 @@
+﻿@page "/champion/edit/{name}"
+@inject IChampionService ChampionService
+
+@if (Name == null)
+{
+	<PageTitle>Add champion</PageTitle>
+	<h3>Add a new champion</h3>
+}
+else
+{
+	<PageTitle>Edit @champion.Name</PageTitle>
+	<h3>Edit @champion.Name</h3>
+}
+
+@* TODO ON VALID SUBMIT *@
+<EditForm Model="champion" OnValidSubmit="HandleValidSubmit">
+	<div>
+		<label for="name">Name</label>
+		<InputText id="name" @bind-Value="champion.Name" class="form-control"></InputText>
+	</div>
+	<br />
+	<div>
+		<label for="title">Title</label>
+		<InputText id="title" @bind-Value="champion.Title" class="form-control"></InputText>
+	</div>
+	<br />
+	<div>
+		<label for="description">Description</label>
+		<InputTextArea id="description" @bind-Value="champion.Description" class="form-control"></InputTextArea>
+	</div>
+	<br />
+	<div>
+		<label>Role</label>
+		<InputSelect @bind-Value="champion.RoleId" class="form-select">
+			@foreach (var role in ChampionService.Roles)
+			{
+				<option value="@role Id">@role.Name</option>
+			}
+		</InputSelect>
+	</div>
+	<br />
+	<div>
+		<label for="stats">Stats</label>
+	</div>
+	<br />
+	<div>
+		<table class="table" cellpadding="0" cellspacing="0" width="100%" border="0">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th scope="col">Value</th>
+					
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th scope="row">Attack</th>
+					<td>
+						<InputNumber id="attack" @bind-Value="champion.Attack" Width="10%" class="form-control"></InputNumber>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">Defense</th>
+					<td>
+						<InputNumber id="defense" @bind-Value="champion.Defense" class="form-control"></InputNumber>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">Magic</th>
+					<td>
+						<InputNumber id="magic" @bind-Value="champion.Magic" class="form-control"></InputNumber>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">Difficulty</th>
+					<td>
+						<InputNumber id="difficulty" min="1" max="3" @bind-Value="champion.Difficulty" class="form-control"></InputNumber>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+			
+		
+	</div>
+	<br />
+	<button type="submit" class="btn btn-primary">@btnText</button>
+	<br />
+	<br />
+	<br />
+</EditForm>
+
+@code
+{
+	string btnText = string.Empty;
+
+	[Parameter]
+	public string? Name { get; set; }
+
+	Champion champion = new Champion { Role = new Role() };
+
+	protected override async Task OnInitializedAsync()
+	{
+		btnText = Name == null ? "Save new Champion" : "Update Champion";
+		await ChampionService.GetRoles();
+	}
+
+	protected override async Task OnParametersSetAsync()
+	{
+		if (Name == null)
+		{
+			// Add new champion
+		}
+		else
+		{
+			champion = await ChampionService.GetSingleChampion(Name);
+		}
+	}
+
+	async Task HandleValidSubmit()
+	{
+
+	}
+}

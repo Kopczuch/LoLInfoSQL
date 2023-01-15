@@ -1,0 +1,53 @@
+﻿@page "/bohaterowie"
+@inject IBohaterowieService BohaterowieService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Bohaterowie</PageTitle>
+<h3>Bohaterowie</h3>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Obraz</th>
+			<th>Nazwa</th>
+			<th>Tytuł</th>
+			<th>Klasa</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var champion in BohaterowieService.Champions)
+		{
+			<tr>
+				<img src="@champion.Obraz" width="120px" height="190px" alt="@champion.Nazwa" />
+				<td>@champion.Nazwa</td>
+				<td>@champion.Tytuł</td>
+				<td>@champion.Klasa</td>
+				<td>
+					<button class="btn btn-primary" @onclick="(() => ShowChampion(champion.Nazwa))"><i class="oi oi-chevron-right"></i></button>
+				</td>
+				<td>
+					<button class="btn btn-primary" @onclick="(() => ShowEditChampion(champion.Nazwa))"><i class="oi oi-pencil"></i></button>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@code
+{
+	protected override async Task OnInitializedAsync()
+	{
+		await BohaterowieService.GetChampions();
+	}
+
+	void ShowChampion(string Name)
+	{
+		NavigationManager.NavigateTo($"bohaterowie/{Name}");
+	}
+
+	void ShowEditChampion(string Name)
+	{
+		NavigationManager.NavigateTo($"bohaterowie/edit/{Name}");
+	}
+
+}

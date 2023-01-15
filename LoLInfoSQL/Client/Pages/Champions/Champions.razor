@@ -1,0 +1,57 @@
+﻿@page "/champions"
+@inject IChampionService ChampionService
+@inject NavigationManager NavigationManager
+
+@*<style>
+	body
+	{
+		background-color: white;
+	}
+</style>*@
+
+<PageTitle>Champions</PageTitle>
+<h3>Champions</h3>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Title</th>
+			<th>Role</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var champion in ChampionService.Champions)
+		{
+			<tr>
+				<td>@champion.Name</td>
+				<td>@champion.Title</td>
+				<td>@champion.Role.Name</td>
+				<td>
+					<button class="btn btn-primary" @onclick="(() => ShowChampion(champion.Name))"><i class="oi oi-caret-right"></i></button>
+				</td>
+				<td>
+					<button class="btn btn-primary" @onclick="(() => ShowEditChampion(champion.Name))"><i class="oi oi-pencil"></i></button>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@code
+{
+	protected override async Task OnInitializedAsync()
+	{
+		await ChampionService.GetChampions();
+	}
+
+	void ShowChampion(string Name)
+	{
+		NavigationManager.NavigateTo($"champion/{Name}");
+	}
+
+	void ShowEditChampion(string Name)
+	{
+		NavigationManager.NavigateTo($"champion/edit/{Name}");
+	}
+}

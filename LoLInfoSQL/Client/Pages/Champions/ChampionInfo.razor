@@ -1,0 +1,22 @@
+﻿@page "/champion/{name}"
+@inject IChampionService ChampionService
+
+<PageTitle>@champion.Name</PageTitle>
+<h3>@champion.Name - @champion.Title</h3>
+
+<h6>@champion.Description</h6>
+
+
+@code
+{
+	[Parameter]
+	public string? Name { get; set; }
+
+	Champion champion = new Champion { Role = new Role() };
+
+
+	protected override async Task OnParametersSetAsync()
+	{
+		champion = await ChampionService.GetSingleChampion(Name);
+	}
+}

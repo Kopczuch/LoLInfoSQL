@@ -1,0 +1,78 @@
+﻿@page "/bohaterowie/{name}"
+@inject IBohaterowieService BohaterowieService
+
+<PageTitle>@champion.Nazwa</PageTitle>
+<h3>@champion.Nazwa - @champion.Tytuł</h3>
+<h5>@champion.Klasa</h5>
+<br />
+
+<style>
+    .container
+    {
+        display: flex;
+        align-items: normal;
+        justify-content: center
+    }
+/*    img
+    {
+        max-width: 100%
+    }
+    .image
+    {
+        width: 120px 
+        height: 190px
+    }*/
+    .text
+    {
+        font-size: 20px;
+        padding-left: 20px;
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="image">
+            <img src="@champion.Obraz">
+        </div>
+        <div class="text">
+            <h5>@champion.KrotkiOpis</h5>
+            <br />
+            <table class="table" title="Statystyki">
+                <thead>
+                    <tr>
+                        <th>Atak</th>
+                        <th>Obrona</th>
+                        <th>Magia</th>
+                        <th>Trudność</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@champion.Atak</td>
+                        <td>@champion.Obrona</td>
+                        <td>@champion.Magia</td>
+                        <td>@champion.Trudnosc</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div>
+        
+    </div>
+</body>
+
+
+
+
+@code
+{
+	[Parameter]
+	public string? name { get; set; }
+
+	Bohaterowie champion = new Bohaterowie();
+
+	protected override async Task OnParametersSetAsync()
+	{
+		champion = await BohaterowieService.GetSingleChampion(name);
+	}
+}
