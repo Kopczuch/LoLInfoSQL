@@ -7,7 +7,9 @@ namespace LoLInfoSQL.Client.Services.PrzedmiotyService
         List<Przedmioty> Items { get; set; }
 
         Task GetItems();
-        Task<Przedmioty> GetSingleItem(string Name);
+        Task<Przedmioty> GetSingleItem(string name);
+
+        Task SearchItem(string searchText);
 
     }
 }

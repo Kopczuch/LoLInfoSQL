@@ -1,0 +1,101 @@
+﻿@page "/graczezawodowi/{nick}"
+@inject IGraczeZawodowiService GraczeZawodowiService
+
+<PageTitle>@proplayer.Nick</PageTitle>
+<h3>@proplayer.ImieINazwisko - "@proplayer.Nick"</h3>
+<br />
+
+<style>
+    .container
+    {
+        display: flex;
+        align-items: normal;
+        justify-content: start
+    }
+/*    img
+    {
+        max-width: 100%
+    }
+    .image
+    {
+        width: 120px 
+        height: 190px
+    }*/
+    .text
+    {
+        font-size: 20px;
+        padding-left: 20px;
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="image">
+            <img src="@proplayer.Zdjecie">
+        </div>
+        <div class="text">
+            <table class="table" title="Statystyki">
+                <tbody>
+                    <tr>
+                        <th>Imię i nazwisko</th>
+                        <td>@proplayer.ImieINazwisko</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <th>Nick</th>
+                        <td>@proplayer.Nick</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <th>Kraj pochodzenia</th>
+                        <td>@proplayer.Kraj</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <th>Data urodzenia</th>
+                        <td>@proplayer.DataUrodzin</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <th>Rezydencja</th>
+                        <td>@proplayer.Rezydencja</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <th>Drużyna</th>
+                        <td>@proplayer.IdDruzyny</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <th>Rola</th>
+                        <td>@proplayer.Rola</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <th>Ulubiona postać</th>
+                        <td>@proplayer.UlubionyBohater</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+@code
+{
+    [Parameter]
+    public string? nick { get; set; }
+
+    GraczeZawodowi proplayer = new GraczeZawodowi();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        proplayer = await GraczeZawodowiService.GetSingleProPlayer(nick);
+    }
+}

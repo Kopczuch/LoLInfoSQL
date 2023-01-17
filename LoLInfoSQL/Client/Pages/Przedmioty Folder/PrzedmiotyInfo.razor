@@ -6,23 +6,46 @@
 
 <br />
 
-<dev>
-	<h3>@item.Ikona</h3>
-	<h3>@item.Nazwa</h3>
-	<h3>@item.Statystyki</h3>
-	<h3>@item.Cena</h3>
-	<h3>@item.WartoscSprzedazy</h3>
-</dev>
+<style>
+    .container
+    {
+        display: flex;
+        align-items: normal;
+        justify-self: start;
+    }
+    .text
+    {
+        font-size: 20px;
+        padding-left: 20px;
+    }
+    .image
+    {
+        
+    }
+
+</style>
+<body>
+    <div class="container">
+        <div class="image">
+            <img src="@item.Ikona" width="100px" height="100px">
+        </div>
+        <div class="text">
+            <h5>@((MarkupString)item.Statystyki)</h5>
+        </div>
+    </div>
+    <div> 
+    </div>
+</body>
 
 @code
 {
-	[Parameter]
-	public string? name { get; set; }
+    [Parameter]
+    public string? name { get; set; }
 
-	Przedmioty item = new Przedmioty();
+    Przedmioty item = new Przedmioty();
 
-	protected override async Task OnParametersSetAsync()
-	{
-		item = await PrzedmiotyService.GetSingleItem(name);
-	}
+    protected override async Task OnParametersSetAsync()
+    {
+        item = await PrzedmiotyService.GetSingleItem(name);
+    }
 }

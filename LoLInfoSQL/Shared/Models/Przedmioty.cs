@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace LoLInfoSQL.Shared.Models
 {
@@ -19,7 +20,9 @@ namespace LoLInfoSQL.Shared.Models
         public short? WartoscSprzedazy { get; set; }
 
         public virtual ZakupionePrzedmioty ZakupionePrzedmioty { get; set; } = null!;
+
         public virtual ICollection<KomponentyPrzedmiotow> KomponentyPrzedmiotowIdKomponentuNavigations { get; set; }
+       
         public virtual ICollection<KomponentyPrzedmiotow> KomponentyPrzedmiotowIdPrzedNavigations { get; set; }
     }
 }

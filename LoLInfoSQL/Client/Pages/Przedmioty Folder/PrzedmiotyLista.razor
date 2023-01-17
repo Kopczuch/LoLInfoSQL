@@ -5,6 +5,23 @@
 <PageTitle>Przedmioty</PageTitle>
 <h3>Przedmioty</h3>
 
+<BlazoredTypeahead SearchMethod="@SearchItem"
+					TValue="Przedmioty"
+					TItem="Przedmioty"
+					Value="selectedItem"
+					ValueChanged="HandleSearch"
+				   ValueExpression="@(() => selectedItem)"
+					placeholder="Wyszukaj...">
+	<SelectedTemplate>
+		@context.Nazwa 
+	</SelectedTemplate>
+	<ResultTemplate>
+		@context.Nazwa
+	</ResultTemplate>
+	<NotFoundTemplate>
+		Nie znaleziono przedmiotu.
+	</NotFoundTemplate>
+</BlazoredTypeahead>
 
 <table class="table">
 	<thead>
@@ -24,7 +41,7 @@
 				<td width="250px">@item.Cena</td>
 				<td>@item.WartoscSprzedazy</td>
 				<td>
-					<button class="btn btn-primary" @onclick="(() => ShowItem(item.Nazwa))"><i class="oi oi-chevron-right"></i></button>
+					<button class="btn btn-primary" @onclick="(() => ShowItem(item.Nazwa))"><i class="oi oi-info"></i></button>
 				</td>
 				<td>
 					<button class="btn btn-primary" @onclick="(() => ShowEditItem(item.Nazwa))"><i class="oi oi-pencil"></i></button>
@@ -37,9 +54,24 @@
 
 @code
 {
+	private Przedmioty selectedItem;
+
 	protected override async Task OnInitializedAsync()
 	{
 		await PrzedmiotyService.GetItems();
+	}
+
+	private void HandleSearch(Przedmioty item)
+	{
+		if (item == null) return;
+		selectedItem = item;
+		NavigationManager.NavigateTo($"przedmioty/{selectedItem.Nazwa}");
+	}
+
+	private async Task<IEnumerable<Przedmioty>> SearchItem(string searchText)
+	{
+		await PrzedmiotyService.SearchItem(searchText);
+		return PrzedmiotyService.Items;
 	}
 
 	void ShowItem(string Name)

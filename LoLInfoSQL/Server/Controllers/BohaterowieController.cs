@@ -26,7 +26,9 @@ namespace LoLInfoSQL.Server.Controllers
 		[HttpGet("{name}")]
 		public async Task<ActionResult<Bohaterowie>> GetSingleChampion(string name)
 		{
-			var champion = context.Bohaterowies.FirstOrDefault(h => h.Nazwa == name);
+			var champion = context.Bohaterowies
+				.Include(p => p.Kontras)
+				.FirstOrDefault(h => h.Nazwa == name);
 
 			if (champion == null)
 			{
@@ -34,5 +36,13 @@ namespace LoLInfoSQL.Server.Controllers
 			}
 			return Ok(champion);
 		}
-	}
+
+        [HttpGet("Search/{searchText}")]
+        public async Task<ActionResult<List<Bohaterowie>>> SearchChampions(string searchText)
+        {
+            var champion = context.Bohaterowies
+                .Where(p => p.Nazwa.Contains(searchText));
+            return Ok(champion);
+        }
+    }
 }

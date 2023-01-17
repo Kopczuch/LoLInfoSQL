@@ -1,0 +1,78 @@
+﻿@page "/gracze/{nick}"
+@inject IGraczeService GraczeService
+
+<PageTitle>Moje dane</PageTitle>
+
+<h3>@player.Nick</h3>
+
+
+<div class="table">
+    <table class="table">
+        <tr>
+            <th>Dywizja</th>
+            <th>Poziom</th>
+            <th>Ulubiony bohater</th>
+            <th>Procent wygranych</th>
+            <th>Średnie KDA</th>
+        </tr>
+        <tr>
+            <td>@player.Dywizja</td>
+            <td>@player.Poziom</td>
+            <td>@player.UlubionyBohater</td>
+            <td>WIN RATE PLACEHOLDER</td>
+            <td>AVG KDA PLACEHOLDER</td>
+        </tr>
+    </table>
+</div>
+
+<br />
+<br />
+
+<div class="table">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id meczu</th>
+                <th>Rezultat</th>
+                <th>Zabójstwa/Śmierci/Asysty</th>
+                <th>CS</th>
+                <th>Zdobyte złoto</th>
+                <th>Czas gry</th>
+                <th>Zadane obrażenia</th>
+                <th>Strona</th>
+                <th>Bohater</th>
+            </tr>
+        </thead>
+        <tbody>
+                @foreach (var game in player.GryIdMeczus)
+                {
+                    
+                    <tr>
+                        <td>@game.IdMeczu</td>
+                        <td>@game.Rezultat</td>
+                        <td>@game.Zabojstwa/@game.Smierci/@game.Asysty</td>
+                        <td>@game.Creep_score</td>
+                        <td>@game.ZdobyteZloto</td>
+                        <td>@game.CzasGry</td>
+                        <td>@game.ZadaneObrazenia</td>
+                        <td>@game.Strona</td>
+                        <td>@game.BohaterowieNazwa</td>
+                    </tr>
+                }   
+        </tbody>
+    </table>
+</div>
+
+
+@code
+{
+    [Parameter]
+    public string? nick { get; set; }
+
+    Gracze player = new Gracze();
+
+	protected override async Task OnParametersSetAsync()
+	{
+		player = await GraczeService.GetPlayer(nick);
+	}
+}

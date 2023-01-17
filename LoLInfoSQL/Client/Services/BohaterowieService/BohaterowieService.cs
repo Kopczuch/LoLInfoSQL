@@ -25,5 +25,11 @@ namespace LoLInfoSQL.Client.Services.BohaterowieService
                 return result;
             throw new Exception("Champion not found!");
         }
+        public async Task SearchChampion(string searchText)
+        {
+            var result = await http.GetFromJsonAsync<List<Bohaterowie>>($"api/bohaterowie/Search/{searchText}");
+            if (result != null)
+                Champions = result;
+        }
     }
 }

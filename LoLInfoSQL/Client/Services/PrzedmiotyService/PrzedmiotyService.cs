@@ -11,6 +11,13 @@ namespace LoLInfoSQL.Client.Services.PrzedmiotyService
         }
         public List<Przedmioty> Items { get; set; } = new List<Przedmioty>();
 
+        //public async Task GetComponents(int id)
+        //{
+        //    var result = await http.GetFromJsonAsync<List<Przedmioty>>($"api/przedmioty/komponenty/{id}");
+        //    if (result != null)
+        //        Items = result;
+        //}
+
         public async Task GetItems()
         {
             var result = await http.GetFromJsonAsync<List<Przedmioty>>("api/przedmioty");
@@ -24,6 +31,14 @@ namespace LoLInfoSQL.Client.Services.PrzedmiotyService
             if (result != null)
                 return result;
             throw new Exception("Item not found!");
+        }
+
+
+        public async Task SearchItem(string searchText)
+        {
+            var result = await http.GetFromJsonAsync<List<Przedmioty>>($"api/przedmioty/Search/{searchText}");
+            if (result != null)
+                Items = result;
         }
     }
 }

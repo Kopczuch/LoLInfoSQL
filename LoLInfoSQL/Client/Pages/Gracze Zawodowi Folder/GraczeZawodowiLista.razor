@@ -1,0 +1,86 @@
+﻿@page "/graczezawodowi"
+@inject IGraczeZawodowiService GraczeZawodowiService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Pro Players</PageTitle>
+<h3>Gracze Zawodowi</h3>
+
+<BlazoredTypeahead SearchMethod="@SearchProPlayer"
+					TValue="GraczeZawodowi"
+					TItem="GraczeZawodowi"
+					Value="selectedProPlayer"
+					ValueChanged="HandleSearch"
+					ValueExpression="@(() => selectedProPlayer)"
+					placeholder="Wyszukaj...">
+	<SelectedTemplate>
+		@context.Nick 
+	</SelectedTemplate>
+	<ResultTemplate>
+		@context.Nick (@context.ImieINazwisko)
+	</ResultTemplate>
+	<NotFoundTemplate>
+		Nie znaleziono gracza.
+	</NotFoundTemplate>
+</BlazoredTypeahead>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Zdjecie</th>
+			<th>Nick</th>
+			<th>Imię i nazwisko</th>
+			<th>Drużyna</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var proplayer in GraczeZawodowiService.ProPlayers)
+		{
+			<tr>
+				<img src="@proplayer.Zdjecie" alt="@proplayer.Nick" />
+				<td>@proplayer.Nick</td>
+				<td>@proplayer.ImieINazwisko</td>
+				<td>@proplayer.IdDruzyny</td>
+				<td>
+					<button class="btn btn-primary" @onclick="(() => ShowProPlayer(proplayer.Nick))"><i class="oi oi-info"></i></button>
+				</td>
+				<td>
+					<button class="btn btn-primary" @onclick="(() => ShowEditProPlayer(proplayer.Nick))"><i class="oi oi-pencil"></i></button>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@code
+{
+	private GraczeZawodowi selectedProPlayer;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await GraczeZawodowiService.GetProPlayers();
+	}
+
+	private void HandleSearch(GraczeZawodowi proplayer)
+	{
+		if (proplayer == null) return;
+		selectedProPlayer = proplayer;
+		NavigationManager.NavigateTo($"graczezawodowi/{selectedProPlayer.Nick}");
+	}
+
+	private async Task<IEnumerable<GraczeZawodowi>> SearchProPlayer(string searchText)
+	{
+		await GraczeZawodowiService.SearchProPlayer(searchText);
+		return GraczeZawodowiService.ProPlayers;
+	}
+
+	void ShowProPlayer(string Nick)
+	{
+		NavigationManager.NavigateTo($"graczezawodowi/{Nick}");
+	}
+
+	void ShowEditProPlayer(string Nick)
+	{
+		NavigationManager.NavigateTo($"graczezawodowi/edit/{Nick}");
+	}
+
+}

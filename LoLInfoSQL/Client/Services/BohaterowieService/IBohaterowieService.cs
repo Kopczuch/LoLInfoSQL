@@ -6,5 +6,7 @@
 
         Task GetChampions();
         Task<Bohaterowie> GetSingleChampion(string name);
+
+        Task SearchChampion(string searchText);
     }
 }

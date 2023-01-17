@@ -1,0 +1,86 @@
+﻿@page "/druzyny"
+@inject IDruzynyService DruzynyService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Drużyny</PageTitle>
+<h3>Drużyny</h3>
+
+<BlazoredTypeahead SearchMethod="@SearchTeam"
+				   TValue="Druzyny"
+				   TItem="Druzyny"
+				   Value="selectedTeam"
+				   ValueChanged="HandleSearch"
+				   ValueExpression="@(() => selectedTeam)"
+				   placeholder="Wyszukaj...">
+	<SelectedTemplate>
+		@context.Nazwa
+	</SelectedTemplate>
+	<ResultTemplate>
+		@context.Nazwa [@context.IdDruzyny]
+	</ResultTemplate>
+	<NotFoundTemplate>
+		Nie znaleziono drużyny.
+	</NotFoundTemplate>
+</BlazoredTypeahead>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th width="250px">Logo</th>
+			<th width="250px">Nazwa</th>
+			<th width="250px">Id</th>
+			<th>Liga</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var team in DruzynyService.Teams)
+		{
+			<tr>
+				<img src="@team.Logo" width="120px" height="120px" alt="@team.Nazwa" />
+				<td>@team.Nazwa</td>
+				<td>@team.IdDruzyny</td>
+				<td>@team.Liga</td>
+				<td>
+					<button class="btn btn-primary" @onclick="(() => ShowTeam(team.IdDruzyny))"><i class="oi oi-info"></i></button>
+				</td>
+				<td>
+					<button class="btn btn-primary" @onclick="(() => ShowEditTeam(team.IdDruzyny))"><i class="oi oi-pencil"></i></button>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@code
+{
+	private Druzyny selectedTeam;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await DruzynyService.GetTeams();
+	}
+
+	private void HandleSearch(Druzyny item)
+	{
+		if (item == null) return;
+		selectedTeam = item;
+		NavigationManager.NavigateTo($"druzyny/{selectedTeam.IdDruzyny}");
+	}
+
+	private async Task<IEnumerable<Druzyny>> SearchTeam(string searchText)
+	{
+		await DruzynyService.SearchTeam(searchText);
+		return DruzynyService.Teams;
+	}
+
+	void ShowTeam(string IdDruzyny)
+	{
+		NavigationManager.NavigateTo($"druzyny/{IdDruzyny}");
+	}
+
+	void ShowEditTeam(string IdDruzyny)
+	{
+		NavigationManager.NavigateTo($"druzyny/edit/{IdDruzyny}");
+	}
+
+}

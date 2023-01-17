@@ -11,7 +11,7 @@
     {
         display: flex;
         align-items: normal;
-        justify-content: center
+        justify-content: start
     }
 /*    img
     {
@@ -54,6 +54,14 @@
                     </tr>
                 </tbody>
             </table>
+            <label><strong>Kontry:</strong></label>
+            @foreach (var i in champion.Kontras)
+                {
+                    <ul>
+                        <li>@i.Nazwa</li>
+                    </ul>
+                }
+            
         </div>
     </div>
     <div>

@@ -1,0 +1,90 @@
+﻿@page "/druzyny/{id}"
+@inject IDruzynyService DruzynyService
+
+<PageTitle>@team.IdDruzyny</PageTitle>
+<h3>@team.Nazwa [@team.IdDruzyny] - Drużyna @team.Liga</h3>
+
+<style>
+    .container
+    {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .text
+    {
+        font-size: 20px;
+        padding-left: 20px;
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="image">
+            <img src="@team.Logo">
+        </div>
+        <div class="text">
+            <h5>@team.Opis</h5>
+        </div>
+    </div>
+</body>
+
+<style>
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .text {
+        font-size: 20px;
+        padding-left: 20px;
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="image">
+            <img src="@team.ZdjecieZawodnikow" width="400px" height="250">
+        </div>
+        <div class="table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>NICK</th>
+                        <th>IMIE I NAZWISKO</th>
+                        <th>KRAJ</th>
+                        <th>ROLA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    @foreach (var member in members)
+                    {
+                        <tr>
+                            <td>@member.Nick</td>
+                            <td>@member.ImieINazwisko</td>
+                            <td>@member.Kraj</td>
+                            <td>@member.Rola</td>
+                        </tr>
+                    }
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+
+@code
+{
+	[Parameter]
+	public string? id { get; set; }
+
+	Druzyny team = new Druzyny();
+	List<GraczeZawodowi> members = new List<GraczeZawodowi>();
+
+	protected override async Task OnParametersSetAsync()
+	{
+		team = await DruzynyService.GetSingleTeam(id);
+		members = await DruzynyService.GetMembers(id);
+	}
+}

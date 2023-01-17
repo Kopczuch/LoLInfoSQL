@@ -27,6 +27,7 @@ namespace LoLInfoSQL.Shared.Models
         public virtual DbSet<Turnieje> Turniejes { get; set; } = null!;
         public virtual DbSet<ZakupionePrzedmioty> ZakupionePrzedmioties { get; set; } = null!;
 
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -321,10 +322,12 @@ namespace LoLInfoSQL.Shared.Models
                     .HasMaxLength(20)
                     .HasColumnName("bohaterowie_nazwa");
 
-                entity.Property(e => e.Cs).HasColumnName("cs");
+                entity.Property(e => e.Creep_score)
+                    
+                    .HasColumnName("creep_score");
 
                 entity.Property(e => e.CzasGry)
-                    .HasColumnType("datetime")
+                    .HasColumnType("timespan")
                     .HasColumnName("czas_gry");
 
                 entity.Property(e => e.Rezultat)
@@ -342,7 +345,7 @@ namespace LoLInfoSQL.Shared.Models
                 entity.Property(e => e.ZabojstwaDruzyny).HasColumnName("zabojstwa_druzyny");
 
                 entity.Property(e => e.ZadaneObrazenia)
-                    .HasPrecision(6, 3)
+                    //.HasPrecision(6, 3)
                     .HasColumnName("zadane_obrazenia");
 
                 entity.Property(e => e.ZdobyteZloto).HasColumnName("zdobyte_zloto");
