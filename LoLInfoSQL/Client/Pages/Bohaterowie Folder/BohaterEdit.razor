@@ -15,20 +15,24 @@ else
 
 <EditForm Model="champion" OnValidSubmit="HandleValidSubmit">
 	<div>
-		<label for="nazwa">Nazwa</label>
-		<InputText id="nazwa" @bind-Value="champion.Nazwa" class="form-control"></InputText>
-	</div>
-	<div>
 		<label for="tytul">Tytuł</label>
 		<InputText id="tytul" @bind-Value="champion.Tytuł" class="form-control"></InputText>
 	</div>
-	<div>
+@*	<div>
 		<label for="obraz">Obraz</label>
 		<InputText id="obraz" @bind-Value="champion.Obraz" class="form-control"></InputText>
-	</div>
+	</div>*@
 	<div>
+		<label for="obraz">Obraz</label>
+		<InputFile OnChange="OnFileChangeImage" class="form-control"></InputFile>
+	</div>
+@*	<div>
 		<label for="ikona">Ikona</label>
 		<InputText id="ikona" @bind-Value="champion.Ikona" class="form-control"></InputText>
+	</div>*@
+	<div>
+		<label for="ikona">Ikona</label>
+		<InputFile OnChange="OnFileChangeIcon" class="form-control"></InputFile>
 	</div>
 	<div>
 		<label for="krotkiopis">Opis</label>
@@ -158,5 +162,25 @@ else
 	async Task DeleteChampion()
 	{
 		await BohaterowieService.DeleteChampion(champion.Nazwa);
+	}
+
+	async Task OnFileChangeIcon(InputFileChangeEventArgs e)
+	{
+		var format = "img/png";
+		var resizedImage = await e.File.RequestImageFileAsync(format, 200, 200);
+		var buffer = new byte[resizedImage.Size];
+		await resizedImage.OpenReadStream().ReadAsync(buffer);
+		var imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+		champion.Ikona = imageData;
+	}
+
+	async Task OnFileChangeImage(InputFileChangeEventArgs e)
+	{
+		var format = "img/png";
+		var resizedImage = await e.File.RequestImageFileAsync(format, 200, 200);
+		var buffer = new byte[resizedImage.Size];
+		await resizedImage.OpenReadStream().ReadAsync(buffer);
+		var imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+		champion.Obraz= imageData;
 	}
 }

@@ -11,14 +11,10 @@
 else
 {
 	<PageTitle>Edytuj</PageTitle>
-	<h3>Edytuj @team.Nazwa</h3>
+	<h3>Edytuj @team.IdDruzyny</h3>
 }
 
 <EditForm Model="team" OnValidSubmit="HandleValidSubmit">
-	<div>
-		<label for="iddruzyny">ID</label>
-		<InputText id="iddruzyny" @bind-Value="team.IdDruzyny" class="form-control"></InputText>
-	</div>
 	<div>
 		<label for="nazwa">Nazwa</label>
 		<InputText id="nazwa" @bind-Value="team.Nazwa" class="form-control"></InputText>
@@ -33,11 +29,11 @@ else
 	</div>
 	<div>
 		<label for="logo">Logo</label>
-		<InputText id="logo" @bind-Value="team.Logo" class="form-control"></InputText>
+		<InputFile OnChange="OnFileChangeLogo" class="form-control"></InputFile>
 	</div>
 	<div>
 		<label for="zdjeciezawodnikow">Zdjęcie Zawodników</label>
-		<InputText id="zdjeciezawodnikow" @bind-Value="team.ZdjecieZawodnikow" class="form-control"></InputText>
+		<InputFile OnChange="OnFileChangeImage" class="form-control"></InputFile>
 	</div>
 	<button type="submit" class="btn btn-primary" @onclick="HandleValidSubmit">@btnText</button>
 	<button type="button" class="btn btn-danger" @onclick="DeleteTeam">Usuń drużynę</button>
@@ -83,5 +79,25 @@ else
 	async Task DeleteTeam()
 	{
 		await DruzynyService.DeleteTeam(team.IdDruzyny);
+	}
+
+	async Task OnFileChangeLogo(InputFileChangeEventArgs e)
+	{
+		var format = "img/png";
+		var resizedImage = await e.File.RequestImageFileAsync(format, 200, 200);
+		var buffer = new byte[resizedImage.Size];
+		await resizedImage.OpenReadStream().ReadAsync(buffer);
+		var imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+		team.Logo= imageData;
+	}
+
+	async Task OnFileChangeImage(InputFileChangeEventArgs e)
+	{
+		var format = "img/png";
+		var resizedImage = await e.File.RequestImageFileAsync(format, 200, 200);
+		var buffer = new byte[resizedImage.Size];
+		await resizedImage.OpenReadStream().ReadAsync(buffer);
+		var imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+		team.ZdjecieZawodnikow= imageData;
 	}
 }

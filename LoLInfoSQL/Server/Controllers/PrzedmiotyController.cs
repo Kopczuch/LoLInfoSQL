@@ -19,7 +19,7 @@ namespace LoLInfoSQL.Server.Controllers
         public async Task<ActionResult<List<Przedmioty>>> GetItems()
         {
             var items = await context.Przedmioties
-                .OrderBy(p => p.Cena)
+                .OrderBy(p => p.IdPrzed)
                 .ThenBy(p => p.Nazwa)
                 .ToListAsync();
             return Ok(items);

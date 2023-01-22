@@ -14,7 +14,11 @@ else
 	<h3>Edytuj @item.Nazwa</h3>
 }
 
+<img src="@item.Ikona" width="60px" height="60px" alt="@item.Nazwa" />
+
+
 <EditForm Model="item" OnValidSubmit="HandleValidSubmit">
+	
 	<div>
 		<label for="nazwa">Nazwa</label>
 		<InputText id="nazwa" @bind-Value="item.Nazwa" class="form-control"></InputText>
@@ -23,9 +27,13 @@ else
 		<label for="statystyki">Statystyki</label>
 		<InputText id="statystyki" @bind-Value="item.Statystyki" class="form-control"></InputText>
 	</div>
-	<div>
+@*	<div>
 		<label for="ikona">Ikona</label>
 		<InputText id="ikona" @bind-Value="item.Ikona" class="form-control"></InputText>
+	</div>*@
+	<div>
+		<label for="ikona">Ikona</label>
+		<InputFile OnChange="OnFileChange" class="form-control"></InputFile>
 	</div>
 	<div>
 		<label for="cena">Cena</label>
@@ -48,11 +56,15 @@ else
 
 	Przedmioty item = new Przedmioty();
 
+	List<Przedmioty> items = new List<Przedmioty>();
+
 	protected override async Task OnInitializedAsync()
 	{
-		btnText = item == null ? "Zapisz nowy przedmiot" : "Aktualizuj przedmiot";
+		btnText = name == null ? "Zapisz nowy przedmiot" : "Aktualizuj przedmiot";
 
 		await PrzedmiotyService.GetItems();
+
+		items = PrzedmiotyService.Items;
 	}
 
 	protected override async Task OnParametersSetAsync()
@@ -67,6 +79,8 @@ else
 	{
 		if (name == null)
 		{
+			var lastItem = items.Last();
+			item.IdPrzed = lastItem.IdPrzed + 1;
 			await PrzedmiotyService.CreateItem(item);
 		}
 		else
@@ -79,5 +93,15 @@ else
 	async Task DeleteTeam()
 	{
 		await PrzedmiotyService.DeleteItem(item.Nazwa);
+	}
+
+	async Task OnFileChange(InputFileChangeEventArgs e)
+	{
+		var format = "img/png";
+		var resizedImage = await e.File.RequestImageFileAsync(format, 200, 200);
+		var buffer = new byte[resizedImage.Size];
+		await resizedImage.OpenReadStream().ReadAsync(buffer);
+		var imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+		item.Ikona= imageData;
 	}
 }
