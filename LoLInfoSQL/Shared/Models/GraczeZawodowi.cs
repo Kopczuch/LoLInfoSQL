@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace LoLInfoSQL.Shared.Models
@@ -11,8 +12,13 @@ namespace LoLInfoSQL.Shared.Models
             GryIdMeczus = new HashSet<Gry>();
         }
 
+        [Required (ErrorMessage = "Nick jest wymagany.")]
         public string Nick { get; set; } = null!;
+
+        [Required (ErrorMessage = "Imię i nazwisko są wymagane.")]
         public string ImieINazwisko { get; set; } = null!;
+
+        [Required(ErrorMessage = "Kraj jest wymagany.")]
         public string Kraj { get; set; } = null!;
         public string Rola { get; set; } = null!;
         public string Rezydencja { get; set; } = null!;

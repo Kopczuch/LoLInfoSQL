@@ -1,9 +1,11 @@
 ﻿@page "/gracze/{nick}"
 @inject IGraczeService GraczeService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Moje dane</PageTitle>
 
-<h3>@player.Nick</h3>
+
+<h3>@player.Nick <button class="btn btn-primary" @onclick="(() => ShowEditPlayer(player.Nick))"><i class="oi oi-pencil"></i></button></h3>
 
 
 <div class="table">
@@ -24,6 +26,7 @@
         </tr>
     </table>
 </div>
+
 
 <br />
 <br />
@@ -75,4 +78,9 @@
 	{
 		player = await GraczeService.GetPlayer(nick);
 	}
+
+    void ShowEditPlayer(string nick)
+    {
+        NavigationManager.NavigateTo($"gracze/edit/{nick}");
+    }
 }

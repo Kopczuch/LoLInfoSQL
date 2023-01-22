@@ -1,0 +1,61 @@
+﻿@page "/gracze/edit/{nick}"
+@inject IGraczeService GraczeService
+@inject IBohaterowieService BohaterowieService
+
+<PageTitle>Edit</PageTitle>
+<h3>Edit @player.Nick</h3>
+
+<EditForm Model="player" OnValidSubmit="HandleValidSubmit">
+	<DataAnnotationsValidator />
+	<div>
+		<label for="dywizja">Dywizja</label>
+		<InputText id="dywizja" @bind-Value="player.Dywizja" class="form-control"></InputText>
+		<ValidationMessage For="@(() => player.Dywizja)" />
+	</div>
+	<div>
+		<label for="poziom">Poziom</label>
+		<InputNumber id="poziom" @bind-Value="player.Poziom" class="form-control" min=1></InputNumber>
+		<ValidationMessage For="@(() => player.Poziom)" />
+	</div>
+	<div>
+		<label for="ulubionybohater">Ulubiony bohater</label>
+		<InputSelect id="ulubionybohater" @bind-Value="player.UlubionyBohater" class="form-control">
+			@foreach (var champion in championsList)
+			{
+				<option value="@champion.Nazwa">@champion.Nazwa</option>
+			}
+		</InputSelect>
+	</div>
+	<br />
+	<button type="submit" class="btn btn-primary" @onclick="HandleValidSubmit">@btnText</button>
+</EditForm>
+
+@code
+{
+	string btnText = string.Empty;
+
+	[Parameter]
+	public string? nick { get; set; }
+
+	Gracze player = new Gracze();
+
+	List<Bohaterowie> championsList = new List<Bohaterowie>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		btnText = "Aktualizuj gracza";
+
+		await BohaterowieService.GetChampions();
+		championsList = BohaterowieService.Champions;
+	}
+
+	protected override async Task OnParametersSetAsync()
+	{
+		player = await GraczeService.GetPlayer(nick);
+	}
+
+	async Task HandleValidSubmit()
+	{
+			await GraczeService.UpdatePlayer(player);
+	}
+}

@@ -14,9 +14,19 @@ else
 }
 
 <EditForm Model="champion" OnValidSubmit="HandleValidSubmit">
+	<DataAnnotationsValidator/>
+	@if(name == null)
+	{
+		<div>
+			<label for="nazwa">Nazwa</label>
+			<InputText id="nazwa" @bind-Value="champion.Nazwa" class="form-control"></InputText>
+			<ValidationMessage For="@(() => champion.Nazwa)" />
+		</div>
+	}
 	<div>
 		<label for="tytul">Tytuł</label>
 		<InputText id="tytul" @bind-Value="champion.Tytuł" class="form-control"></InputText>
+		<ValidationMessage For="@(() => champion.Tytuł)"/>
 	</div>
 @*	<div>
 		<label for="obraz">Obraz</label>
@@ -25,6 +35,7 @@ else
 	<div>
 		<label for="obraz">Obraz</label>
 		<InputFile OnChange="OnFileChangeImage" class="form-control"></InputFile>
+		<ValidationMessage For="@(() => champion.Obraz)" />
 	</div>
 @*	<div>
 		<label for="ikona">Ikona</label>
@@ -33,10 +44,12 @@ else
 	<div>
 		<label for="ikona">Ikona</label>
 		<InputFile OnChange="OnFileChangeIcon" class="form-control"></InputFile>
+		<ValidationMessage For="@(() => champion.Ikona)" />
 	</div>
 	<div>
 		<label for="krotkiopis">Opis</label>
 		<InputTextArea id="krotkiopis" @bind-Value="champion.KrotkiOpis" class="form-control"></InputTextArea>
+		<ValidationMessage For="@(() => champion.KrotkiOpis)" />
 	</div>
 	<br />
 	<br />
@@ -47,25 +60,28 @@ else
                 <tr>
                     <th>Atak</th>
 					<InputNumber @bind-Value="champion.Atak" class="form-control" min="0" max="10"></InputNumber>
-
+					<ValidationMessage For="@(() => champion.Atak)" />
 				</tr>
             </tbody>
             <tbody>
                 <tr>
                     <th>Obrona</th>
 					<InputNumber id="obrona" @bind-Value="champion.Obrona" Width="10%" class="form-control" min="0" max="10"></InputNumber>
+					<ValidationMessage For="@(() => champion.Obrona)" />
                 </tr>
             </tbody>
             <tbody>
                 <tr>
                     <th>Magia</th>
 					<InputNumber id="magia" @bind-Value="champion.Magia" Width="10%" class="form-control" min="0" max="10"></InputNumber>
+					<ValidationMessage For="@(() => champion.Magia)" />
                 </tr>
             </tbody>
             <tbody>
                 <tr>
-                    <th>Trudnosc</th>
+                    <th>Trudność</th>
 					<InputNumber id="trudnosc" @bind-Value="champion.Trudnosc" Width="10%" class="form-control" min="0" max="10"></InputNumber>
+					<ValidationMessage For="@(() => champion.Trudnosc)" />
                 </tr>
             </tbody>
         </table>
@@ -177,7 +193,7 @@ else
 	async Task OnFileChangeImage(InputFileChangeEventArgs e)
 	{
 		var format = "img/png";
-		var resizedImage = await e.File.RequestImageFileAsync(format, 200, 200);
+		var resizedImage = await e.File.RequestImageFileAsync(format, 300, 560);
 		var buffer = new byte[resizedImage.Size];
 		await resizedImage.OpenReadStream().ReadAsync(buffer);
 		var imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";

@@ -15,21 +15,38 @@ else
 }
 
 <EditForm Model="team" OnValidSubmit="HandleValidSubmit">
+	<DataAnnotationsValidator/>
+	@if (id == null)
+	{
+		<div>
+			<label for="nick">Nick</label>
+			<InputText id="nick" @bind-Value="team.IdDruzyny" class="form-control"></InputText>
+			<ValidationMessage For="@(() => team.IdDruzyny)" />
+		</div>
+	}
 	<div>
 		<label for="nazwa">Nazwa</label>
 		<InputText id="nazwa" @bind-Value="team.Nazwa" class="form-control"></InputText>
+		<ValidationMessage For="@(() => team.Nazwa)" />
 	</div>
 	<div>
 		<label for="opis">Opis</label>
 		<InputTextArea id="opis" @bind-Value="team.Opis" class="form-control"></InputTextArea>
+		<ValidationMessage For="@(() => team.Opis)" />
 	</div>
 	<div>
 		<label for="liga">Liga</label>
-		<InputText id="liga" @bind-Value="team.Liga" class="form-control"></InputText>
+		<InputSelect id="liga" @bind-Value="team.Liga" class="form-control">
+			@foreach (var league in leagues)
+			{
+				<option value="@league">@league</option>
+			}
+		</InputSelect>
 	</div>
 	<div>
 		<label for="logo">Logo</label>
 		<InputFile OnChange="OnFileChangeLogo" class="form-control"></InputFile>
+		<ValidationMessage For="@(() => team.Logo)" />
 	</div>
 	<div>
 		<label for="zdjeciezawodnikow">Zdjęcie Zawodników</label>
@@ -47,6 +64,19 @@ else
 	public string? id { get; set; }
 
 	Druzyny team = new Druzyny();
+
+	List<string> leagues = new List<string>
+	{
+		"LCK",
+		"LPL",
+		"LCS",
+		"LEC",
+		"PCS",
+		"VCS",
+		"CBLOL",
+		"LJL",
+		"LLA"
+	};
 
 	protected override async Task OnInitializedAsync()
 	{

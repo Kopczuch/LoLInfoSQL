@@ -17,9 +17,20 @@ else
 }
 
 <EditForm Model="proplayer" OnValidSubmit="HandleValidSubmit">
+	<DataAnnotationsValidator/>
+	@if (nick == null)
+	{
+		<div>
+			<label for="nick">Nick</label>
+			<InputText id="nick" @bind-Value="proplayer.Nick" class="form-control"></InputText>
+			<ValidationMessage For="@(() => proplayer.Nick)" />
+		</div>
+	}
+
 	<div>
 		<label for="imieinazwisko">Imię i nazwisko</label>
 		<InputText id="imieinazwisko" @bind-Value="proplayer.ImieINazwisko" class="form-control"></InputText>
+		<ValidationMessage For="@(() => proplayer.ImieINazwisko)" />
 	</div>
 	<div>
 		<img src="@proplayer.Zdjecie" class="rounded" style="max-height: 200px;" />
@@ -31,6 +42,7 @@ else
 	<div>
 		<label for="kraj">Kraj</label>
 		<InputText id="kraj" @bind-Value="proplayer.Kraj" class="form-control"></InputText>
+		<ValidationMessage For="@(() => proplayer.Kraj)" />
 	</div>
 	<div>
 		<label for="dataurodzenia">Data urodzenia</label>
