@@ -18,14 +18,12 @@ namespace LoLInfoSQL.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Gry>>> GetGames()
         {
-            var games = await context.Gries.OrderByDescending(p => p.IdMeczu).ToListAsync();
+            var games = await context.Gries
+                .Include(p => p.BohaterowieNazwaNavigation)
+                .OrderByDescending(p => p.IdMeczu)
+                .ToListAsync();
             return Ok(games);
         }
 
-        //[HttpGet("{nick}/gra")]
-        //public async Task<ActionResult<List<Gry>>> GetGames(string nick)
-        //{
-        //    var games = context.
-        //}
     }
 }

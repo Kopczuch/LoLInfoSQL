@@ -3,7 +3,9 @@
 @inject NavigationManager NavigationManager
 
 <PageTitle>Bohaterowie</PageTitle>
-<h3>Bohaterowie</h3>
+<h3>Bohaterowie <button class="btn btn-primary" @onclick="CreateNewChampion">Dodaj bohatera</button></h3>
+
+
 
 <BlazoredTypeahead SearchMethod="@SearchChampion"
 					TValue="Bohaterowie"
@@ -43,9 +45,7 @@
 				<td>
 					<button class="btn btn-primary" @onclick="(() => ShowChampion(champion.Nazwa))"><i class="oi oi-info"></i></button>
 				</td>
-				<td>
-					<button class="btn btn-primary" @onclick="(() => ShowEditChampion(champion.Nazwa))"><i class="oi oi-pencil"></i></button>
-				</td>
+
 			</tr>
 		}
 	</tbody>
@@ -78,9 +78,8 @@
 		NavigationManager.NavigateTo($"bohaterowie/{Name}");
 	}
 
-	void ShowEditChampion(string Name)
+	void CreateNewChampion()
 	{
-		NavigationManager.NavigateTo($"bohaterowie/edit/{Name}");
+		NavigationManager.NavigateTo("bohaterowie/edit");
 	}
-
 }

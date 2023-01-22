@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -436,21 +436,21 @@ namespace LoLInfoSQL.Shared.Models
 
             modelBuilder.Entity<Turnieje>(entity =>
             {
-                entity.HasKey(e => new { e.NazwaTurnieju, e.DruzynyIdDruzyny })
+                entity.HasKey(e => new { e.NazwaTurnieju, e.IdDruzyny })
                     .HasName("PRIMARY")
                     .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
 
                 entity.ToTable("turnieje");
 
-                entity.HasIndex(e => e.DruzynyIdDruzyny, "druzynyidtur_fk");
+                entity.HasIndex(e => e.IdDruzyny, "druzynyidtur_fk");
 
                 entity.Property(e => e.NazwaTurnieju)
                     .HasMaxLength(70)
                     .HasColumnName("nazwa_turnieju");
 
-                entity.Property(e => e.DruzynyIdDruzyny)
+                entity.Property(e => e.IdDruzyny)
                     .HasMaxLength(6)
-                    .HasColumnName("druzyny_id_druzyny");
+                    .HasColumnName("id_druzyny");
 
                 entity.Property(e => e.Data)
                     .HasColumnType("datetime")
@@ -472,7 +472,7 @@ namespace LoLInfoSQL.Shared.Models
 
                 entity.HasOne(d => d.DruzynyIdDruzynyNavigation)
                     .WithMany(p => p.Turniejes)
-                    .HasForeignKey(d => d.DruzynyIdDruzyny)
+                    .HasForeignKey(d => d.IdDruzyny)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("druzynyidtur_fk");
             });

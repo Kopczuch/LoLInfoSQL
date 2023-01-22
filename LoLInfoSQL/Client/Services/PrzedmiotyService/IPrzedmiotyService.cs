@@ -11,5 +11,8 @@ namespace LoLInfoSQL.Client.Services.PrzedmiotyService
 
         Task SearchItem(string searchText);
 
+        Task CreateItem(Przedmioty item);
+        Task UpdateItem(Przedmioty item);
+        Task DeleteItem(string name);
     }
 }

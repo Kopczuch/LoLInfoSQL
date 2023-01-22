@@ -3,7 +3,7 @@
 @inject NavigationManager NavigationManager
 
 <PageTitle>Pro Players</PageTitle>
-<h3>Gracze Zawodowi</h3>
+<h3>Gracze Zawodowi <button class="btn btn-primary" @onclick="CreateNewProPlayer">Dodaj gracza zawodowego</button></h3>
 
 <BlazoredTypeahead SearchMethod="@SearchProPlayer"
 					TValue="GraczeZawodowi"
@@ -43,9 +43,6 @@
 				<td>
 					<button class="btn btn-primary" @onclick="(() => ShowProPlayer(proplayer.Nick))"><i class="oi oi-info"></i></button>
 				</td>
-				<td>
-					<button class="btn btn-primary" @onclick="(() => ShowEditProPlayer(proplayer.Nick))"><i class="oi oi-pencil"></i></button>
-				</td>
 			</tr>
 		}
 	</tbody>
@@ -78,9 +75,9 @@
 		NavigationManager.NavigateTo($"graczezawodowi/{Nick}");
 	}
 
-	void ShowEditProPlayer(string Nick)
+	void CreateNewProPlayer()
 	{
-		NavigationManager.NavigateTo($"graczezawodowi/edit/{Nick}");
+		NavigationManager.NavigateTo("graczezawodowi/edit");
 	}
 
 }

@@ -11,5 +11,9 @@
         Task SearchTeam(string searchText);
 
         Task<List<GraczeZawodowi>> GetMembers(string id);
+
+        Task CreateTeam(Druzyny team);
+        Task UpdateTeam(Druzyny team);
+        Task DeleteTeam(string id);
     }
 }

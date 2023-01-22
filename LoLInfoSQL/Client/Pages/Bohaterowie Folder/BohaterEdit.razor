@@ -1,0 +1,162 @@
+﻿@page "/bohaterowie/edit/{name}"
+@page "/bohaterowie/edit"
+@inject IBohaterowieService BohaterowieService
+
+@if (name == null)
+{
+	<PageTitle>Dodaj</PageTitle>
+	<h3>Dodaj bohatera</h3>
+}
+else
+{
+	<PageTitle>Edytuj</PageTitle>
+	<h3>Edytuj @champion.Nazwa</h3>
+}
+
+<EditForm Model="champion" OnValidSubmit="HandleValidSubmit">
+	<div>
+		<label for="nazwa">Nazwa</label>
+		<InputText id="nazwa" @bind-Value="champion.Nazwa" class="form-control"></InputText>
+	</div>
+	<div>
+		<label for="tytul">Tytuł</label>
+		<InputText id="tytul" @bind-Value="champion.Tytuł" class="form-control"></InputText>
+	</div>
+	<div>
+		<label for="obraz">Obraz</label>
+		<InputText id="obraz" @bind-Value="champion.Obraz" class="form-control"></InputText>
+	</div>
+	<div>
+		<label for="ikona">Ikona</label>
+		<InputText id="ikona" @bind-Value="champion.Ikona" class="form-control"></InputText>
+	</div>
+	<div>
+		<label for="krotkiopis">Opis</label>
+		<InputTextArea id="krotkiopis" @bind-Value="champion.KrotkiOpis" class="form-control"></InputTextArea>
+	</div>
+	<br />
+	<br />
+
+	<div>
+        <table class="table" title="Statystyki">
+            <tbody>
+                <tr>
+                    <th>Atak</th>
+					<InputNumber @bind-Value="champion.Atak" class="form-control" min="0" max="10"></InputNumber>
+
+				</tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <th>Obrona</th>
+					<InputNumber id="obrona" @bind-Value="champion.Obrona" Width="10%" class="form-control" min="0" max="10"></InputNumber>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <th>Magia</th>
+					<InputNumber id="magia" @bind-Value="champion.Magia" Width="10%" class="form-control" min="0" max="10"></InputNumber>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <th>Trudnosc</th>
+					<InputNumber id="trudnosc" @bind-Value="champion.Trudnosc" Width="10%" class="form-control" min="0" max="10"></InputNumber>
+                </tr>
+            </tbody>
+        </table>
+	</div>
+	<br />
+	<div>
+		<label for="klasa">Klasa</label>
+		<InputSelect id="klasa" @bind-Value="champion.Klasa" class="form-control">
+			@foreach (var role in rolesList)
+			{
+				<option value="@role">@role</option>
+			}
+		</InputSelect>
+	</div>
+	<br />
+	<div>
+@*		<label>Kontry</label>
+		@if (champion.Kontras != null)
+		{
+			@foreach (var kontra in champion.Kontras)
+			{
+				<div>
+				<InputSelect id="kontry" @bind-Value="kontra.Nazwa" class="form-control">
+				@foreach (var i in championsList)
+				{
+					<option value="@i.Nazwa">@i.Nazwa</option>
+				}
+				</InputSelect>
+				</div>
+			}
+		}*@
+
+	</div>
+	<button type="submit" class="btn btn-primary" @onclick="HandleValidSubmit">@btnText</button>
+	<button type="button" class="btn btn-danger" @onclick="DeleteChampion">Usuń bohatera</button>
+</EditForm>
+
+<br />
+<br />
+<br />
+
+
+
+@code
+{
+	string btnText = string.Empty;
+
+	[Parameter]
+	public string? name { get; set; }
+
+	Bohaterowie champion = new Bohaterowie();
+
+	List<string> rolesList = new List<string>
+	{
+		"Assassin",
+		"Fighter",
+		"Mage",
+		"Marksman",
+		"Support",
+		"Tank"
+	};
+
+	List<Bohaterowie> championsList = new List<Bohaterowie>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		btnText = name == null ? "Zapisz nowego bohatera" : "Aktualizuj bohatera";
+
+		await BohaterowieService.GetChampions();
+		championsList = BohaterowieService.Champions;
+	}
+
+	protected override async Task OnParametersSetAsync()
+	{
+		if (!String.IsNullOrEmpty(name))
+		{
+			champion = await BohaterowieService.GetSingleChampion(name);
+		}
+	}
+
+	async Task HandleValidSubmit()
+	{
+		if(name == null)
+		{
+			await BohaterowieService.CreateChampion(champion);
+		}
+		else
+		{
+			await BohaterowieService.UpdateChampion(champion);
+		}
+
+	}
+
+	async Task DeleteChampion()
+	{
+		await BohaterowieService.DeleteChampion(champion.Nazwa);
+	}
+}

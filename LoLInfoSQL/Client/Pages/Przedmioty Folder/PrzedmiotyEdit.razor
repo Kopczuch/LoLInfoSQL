@@ -1,0 +1,83 @@
+﻿@page "/przedmioty/edit/{name}"
+@page "/przedmioty/edit"
+
+@inject IPrzedmiotyService PrzedmiotyService
+
+@if (name == null)
+{
+	<PageTitle>Dodaj</PageTitle>
+	<h3>Dodaj przedmiot</h3>
+}
+else
+{
+	<PageTitle>Edytuj</PageTitle>
+	<h3>Edytuj @item.Nazwa</h3>
+}
+
+<EditForm Model="item" OnValidSubmit="HandleValidSubmit">
+	<div>
+		<label for="nazwa">Nazwa</label>
+		<InputText id="nazwa" @bind-Value="item.Nazwa" class="form-control"></InputText>
+	</div>
+	<div>
+		<label for="statystyki">Statystyki</label>
+		<InputText id="statystyki" @bind-Value="item.Statystyki" class="form-control"></InputText>
+	</div>
+	<div>
+		<label for="ikona">Ikona</label>
+		<InputText id="ikona" @bind-Value="item.Ikona" class="form-control"></InputText>
+	</div>
+	<div>
+		<label for="cena">Cena</label>
+		<InputNumber id="cena" @bind-Value="item.Cena" class="form-control"></InputNumber>
+	</div>
+	<div>
+		<label for="wartoscsprzedazy">Wartość sprzedaży</label>
+		<InputNumber id="wartoscsprzedazy" @bind-Value="item.WartoscSprzedazy" class="form-control"></InputNumber>
+	</div>
+	<button type="submit" class="btn btn-primary" @onclick="HandleValidSubmit">@btnText</button>
+	<button type="button" class="btn btn-danger" @onclick="DeleteTeam">Usuń przedmiot</button>
+</EditForm>
+
+@code
+{
+	string btnText = string.Empty;
+
+	[Parameter]
+	public string? name { get; set; }
+
+	Przedmioty item = new Przedmioty();
+
+	protected override async Task OnInitializedAsync()
+	{
+		btnText = item == null ? "Zapisz nowy przedmiot" : "Aktualizuj przedmiot";
+
+		await PrzedmiotyService.GetItems();
+	}
+
+	protected override async Task OnParametersSetAsync()
+	{
+		if (!String.IsNullOrEmpty(name))
+		{
+			item = await PrzedmiotyService.GetSingleItem(name);
+		}
+	}
+
+	async Task HandleValidSubmit()
+	{
+		if (name == null)
+		{
+			await PrzedmiotyService.CreateItem(item);
+		}
+		else
+		{
+			await PrzedmiotyService.UpdateItem(item);
+		}
+
+	}
+
+	async Task DeleteTeam()
+	{
+		await PrzedmiotyService.DeleteItem(item.Nazwa);
+	}
+}

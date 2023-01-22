@@ -27,10 +27,12 @@ namespace LoLInfoSQL.Shared.Models
         public string? Strona { get; set; }
         public string BohaterowieNazwa { get; set; } = null!;
 
-        public virtual Bohaterowie BohaterowieNazwaNavigation { get; set; } = null!;
+        
+        public virtual Bohaterowie? BohaterowieNazwaNavigation { get; set; } = null!;
 
         [JsonIgnore]
         public virtual ICollection<Gracze> GraczeNicks { get; set; }
+        [JsonIgnore]
         public virtual ICollection<GraczeZawodowi> GraczeZawodowiNicks { get; set; }
         public virtual ICollection<ZakupionePrzedmioty> IdZakupionegoPrzedmiotus { get; set; }
     }

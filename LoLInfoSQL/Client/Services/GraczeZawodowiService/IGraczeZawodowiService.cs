@@ -8,5 +8,8 @@
         Task<GraczeZawodowi> GetSingleProPlayer(string nick);
 
         Task SearchProPlayer(string searchText);
+        Task CreateProPlayer(GraczeZawodowi proplayer);
+        Task UpdateProPlayer(GraczeZawodowi proplayer);
+        Task DeleteProPlayer(string nick);
     }
 }

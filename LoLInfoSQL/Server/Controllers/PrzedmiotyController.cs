@@ -54,5 +54,58 @@ namespace LoLInfoSQL.Server.Controllers
                 .Where(p => p.Nazwa.Contains(searchText));
             return Ok(item);
         }
+
+        [HttpPost]
+        public async Task<ActionResult<List<Przedmioty>>> CreateItem(Przedmioty item)
+        {
+            context.Przedmioties.Add(item);
+            await context.SaveChangesAsync();
+
+            return Ok(item);
+        }
+
+        [HttpPut("{name}")]
+        public async Task<ActionResult<List<Przedmioty>>> UpdateItem(Przedmioty item, string name)
+        {
+            var dbItem = await context.Przedmioties
+                .FirstOrDefaultAsync(p => p.Nazwa == name);
+            if (dbItem == null)
+                return NotFound("Nie znaleziono przedmiotu.");
+
+            dbItem.IdPrzed = item.IdPrzed;
+            dbItem.Nazwa = item.Nazwa;
+            dbItem.Statystyki = item.Statystyki;
+            dbItem.Ikona = item.Ikona;
+            dbItem.Cena = item.Cena;
+            dbItem.WartoscSprzedazy = item.WartoscSprzedazy;
+
+            await context.SaveChangesAsync();
+
+            return Ok(await GetDbItems());
+
+        }
+
+        [HttpDelete("{name}")]
+        public async Task<ActionResult<List<Przedmioty>>> DeleteItem(string name)
+        {
+            var dbItem = await context.Przedmioties
+                .FirstOrDefaultAsync(p => p.Nazwa == name);
+            if (dbItem == null)
+                return NotFound("Nie znaleziono przedmiotu.");
+
+            context.Przedmioties.Remove(dbItem);
+
+            await context.SaveChangesAsync();
+
+            return Ok(await GetDbItems());
+
+        }
+
+
+        private async Task<List<Przedmioty>> GetDbItems()
+        {
+            return await context.Przedmioties.ToListAsync();
+
+        }
     }
 }

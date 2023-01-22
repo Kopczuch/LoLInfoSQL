@@ -1,8 +1,9 @@
 ﻿@page "/druzyny/{id}"
 @inject IDruzynyService DruzynyService
+@inject NavigationManager NavigationManager
 
 <PageTitle>@team.IdDruzyny</PageTitle>
-<h3>@team.Nazwa [@team.IdDruzyny] - Drużyna @team.Liga</h3>
+<h3>@team.Nazwa [@team.IdDruzyny] - Drużyna @team.Liga <button class="btn btn-primary" @onclick="(() => ShowEditTeam(team.IdDruzyny))"><i class="oi oi-pencil"></i></button> </h3>
 
 <style>
     .container
@@ -73,6 +74,36 @@
     </div>
 </body>
 
+<br />
+<br />
+
+<strong>Turnieje</strong>
+<div class="table">
+    <table class="table">
+        <tr>
+            <th>Nazwa</th>
+            <th>Rodzaj</th>
+            <th>Data</th>
+            <th>Zajęte miejsce</th>
+            <th>Ostatni wynik</th>
+            <th>Nagroda</th>
+        </tr>
+        @foreach (var i in team.Turniejes)
+        {
+            <tr>
+                <td>@i.NazwaTurnieju</td>
+                <td>@i.Rodzaj</td>
+                <td>@i.Data</td>
+                <td>@i.ZajeteMiejsce</td>
+                <td>@i.OstatniWynik</td>
+                <td>@i.Nagroda</td>
+            </tr>
+        }
+    </table>
+</div>
+
+
+
 
 @code
 {
@@ -86,5 +117,10 @@
 	{
 		team = await DruzynyService.GetSingleTeam(id);
 		members = await DruzynyService.GetMembers(id);
-	}
+    }
+
+    void ShowEditTeam(string IdDruzyny)
+    {
+        NavigationManager.NavigateTo($"druzyny/edit/{IdDruzyny}");
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using LoLInfoSQL.Client.Pages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Utilities.IO;
 
 namespace LoLInfoSQL.Server.Controllers
 {
@@ -25,7 +26,9 @@ namespace LoLInfoSQL.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Druzyny>> GetSingleTeam(string id)
         {
-            var team = context.Druzynies.FirstOrDefault(h => h.IdDruzyny == id);
+            var team = context.Druzynies
+                .Include(p => p.Turniejes)
+                .FirstOrDefault(h => h.IdDruzyny == id);
 
             if (team == null)
             {
@@ -33,6 +36,7 @@ namespace LoLInfoSQL.Server.Controllers
             }
             return Ok(team);
         }
+
 
         [HttpGet("{id}/sklad")]
         public async Task<ActionResult<GraczeZawodowi>> GetMembers(string id)
@@ -54,5 +58,51 @@ namespace LoLInfoSQL.Server.Controllers
             return Ok(team);
         }
 
+        [HttpPost]
+        public async Task<ActionResult<List<Druzyny>>> CreateTeam(Druzyny team)
+        {
+            context.Druzynies.Add(team);
+            await context.SaveChangesAsync();
+            return Ok(await GetDbTeams());
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<List<Druzyny>>> UpdateTeam(Druzyny team, string id)
+        {
+            var dbTeam = await context.Druzynies.FirstOrDefaultAsync(p => p.IdDruzyny == id);
+
+            if (dbTeam == null)
+                return NotFound("Nie znaleziono drużyny o podanym id.");
+
+            dbTeam.IdDruzyny = team.IdDruzyny;
+            dbTeam.Nazwa = team.Nazwa;
+            dbTeam.Opis = team.Opis;
+            dbTeam.Liga = team.Liga;
+            dbTeam.Logo = team.Logo;
+            dbTeam.ZdjecieZawodnikow = team.ZdjecieZawodnikow;
+
+            await context.SaveChangesAsync();
+
+            return Ok(await GetDbTeams());
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<List<Druzyny>>> DeleteTeam(string id)
+        {
+            var dbTeam = await context.Druzynies.FirstOrDefaultAsync(p => p.IdDruzyny == id);
+            if (dbTeam == null)
+                return NotFound("Nie znaleziono drużyny o podanym id.");
+
+            context.Druzynies.Remove(dbTeam);
+            await context.SaveChangesAsync();
+
+            return Ok(await GetDbTeams());
+        }
+
+
+        private async Task<List<Druzyny>> GetDbTeams()
+        {
+            return await context.Druzynies.ToListAsync();
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace LoLInfoSQL.Shared.Models
 {
@@ -11,8 +12,8 @@ namespace LoLInfoSQL.Shared.Models
         public short ZajeteMiejsce { get; set; }
         public string OstatniWynik { get; set; } = null!;
         public decimal? Nagroda { get; set; }
-        public string DruzynyIdDruzyny { get; set; } = null!;
-
-        public virtual Druzyny DruzynyIdDruzynyNavigation { get; set; } = null!;
+        public string IdDruzyny { get; set; } = null!;
+        [JsonIgnore]
+        public virtual Druzyny? DruzynyIdDruzynyNavigation { get; set; } = null!;
     }
 }

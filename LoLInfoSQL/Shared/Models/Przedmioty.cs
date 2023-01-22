@@ -19,7 +19,7 @@ namespace LoLInfoSQL.Shared.Models
         public short? Cena { get; set; }
         public short? WartoscSprzedazy { get; set; }
 
-        public virtual ZakupionePrzedmioty ZakupionePrzedmioty { get; set; } = null!;
+        public virtual ZakupionePrzedmioty? ZakupionePrzedmioty { get; set; } = null!;
 
         public virtual ICollection<KomponentyPrzedmiotow> KomponentyPrzedmiotowIdKomponentuNavigations { get; set; }
        

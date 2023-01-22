@@ -3,7 +3,7 @@
 @inject NavigationManager NavigationManager
 
 <PageTitle>Przedmioty</PageTitle>
-<h3>Przedmioty</h3>
+<h3>Przedmioty <button class="btn btn-primary" @onclick="CreateNewItem">Dodaj przedmiot</button></h3>
 
 <BlazoredTypeahead SearchMethod="@SearchItem"
 					TValue="Przedmioty"
@@ -43,9 +43,6 @@
 				<td>
 					<button class="btn btn-primary" @onclick="(() => ShowItem(item.Nazwa))"><i class="oi oi-info"></i></button>
 				</td>
-				<td>
-					<button class="btn btn-primary" @onclick="(() => ShowEditItem(item.Nazwa))"><i class="oi oi-pencil"></i></button>
-				</td>
 			</tr>
 		}
 	</tbody>
@@ -79,8 +76,9 @@
 		NavigationManager.NavigateTo($"przedmioty/{Name}");
 	}
 
-	void ShowEditItem(string Name)
+	void CreateNewItem()
 	{
-		NavigationManager.NavigateTo($"przedmioty/edit/{Name}");
+		NavigationManager.NavigateTo("przedmioty/edit");
 	}
+
 }

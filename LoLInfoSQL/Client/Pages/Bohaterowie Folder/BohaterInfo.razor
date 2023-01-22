@@ -1,8 +1,9 @@
 ﻿@page "/bohaterowie/{name}"
 @inject IBohaterowieService BohaterowieService
+@inject NavigationManager NavigationManager
 
 <PageTitle>@champion.Nazwa</PageTitle>
-<h3>@champion.Nazwa - @champion.Tytuł</h3>
+<h3>@champion.Nazwa - @champion.Tytuł <button class="btn btn-primary" @onclick="(() => ShowEditChampion(champion.Nazwa))"><i class="oi oi-pencil"></i></button></h3>
 <h5>@champion.Klasa</h5>
 <br />
 
@@ -11,7 +12,7 @@
     {
         display: flex;
         align-items: normal;
-        justify-content: start
+        justify-content: start;
     }
 /*    img
     {
@@ -83,4 +84,9 @@
 	{
 		champion = await BohaterowieService.GetSingleChampion(name);
 	}
+
+    void ShowEditChampion(string Name)
+    {
+        NavigationManager.NavigateTo($"bohaterowie/edit/{Name}");
+    }
 }

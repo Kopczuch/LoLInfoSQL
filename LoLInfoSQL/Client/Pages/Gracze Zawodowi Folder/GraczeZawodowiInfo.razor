@@ -1,8 +1,10 @@
 ﻿@page "/graczezawodowi/{nick}"
 @inject IGraczeZawodowiService GraczeZawodowiService
+@inject NavigationManager NavigationManager
 
 <PageTitle>@proplayer.Nick</PageTitle>
-<h3>@proplayer.ImieINazwisko - "@proplayer.Nick"</h3>
+					
+<h3>@proplayer.ImieINazwisko - "@proplayer.Nick" <button class="btn btn-primary" @onclick="(() => ShowEditProPlayer(proplayer.Nick))"><i class="oi oi-pencil"></i></button></h3>
 <br />
 
 <style>
@@ -87,6 +89,41 @@
     </div>
 </body>
 
+<div class="table">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id meczu</th>
+                <th>Rezultat</th>
+                <th>Zabójstwa/Śmierci/Asysty</th>
+                <th>CS</th>
+                <th>Zdobyte złoto</th>
+                <th>Czas gry</th>
+                <th>Zadane obrażenia</th>
+                <th>Strona</th>
+                <th>Bohater</th>
+            </tr>
+        </thead>
+        <tbody>
+                @foreach (var game in proplayer.GryIdMeczus)
+                {
+                    
+                    <tr>
+                        <td>@game.IdMeczu</td>
+                        <td>@game.Rezultat</td>
+                        <td>@game.Zabojstwa/@game.Smierci/@game.Asysty</td>
+                        <td>@game.Creep_score</td>
+                        <td>@game.ZdobyteZloto</td>
+                        <td>@game.CzasGry</td>
+                        <td>@game.ZadaneObrazenia</td>
+                        <td>@game.Strona</td>
+                        <td>@game.BohaterowieNazwa</td>
+                    </tr>
+                }   
+        </tbody>
+    </table>
+</div>
+
 @code
 {
     [Parameter]
@@ -98,4 +135,9 @@
     {
         proplayer = await GraczeZawodowiService.GetSingleProPlayer(nick);
     }
+
+	void ShowEditProPlayer(string Nick)
+	{
+		NavigationManager.NavigateTo($"graczezawodowi/edit/{Nick}");
+	}
 }

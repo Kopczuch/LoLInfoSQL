@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace LoLInfoSQL.Shared.Models
 {
@@ -18,6 +19,7 @@ namespace LoLInfoSQL.Shared.Models
         public string Logo { get; set; } = null!;
         public string? ZdjecieZawodnikow { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<GraczeZawodowi> GraczeZawodowis { get; set; }
         public virtual ICollection<Turnieje> Turniejes { get; set; }
     }

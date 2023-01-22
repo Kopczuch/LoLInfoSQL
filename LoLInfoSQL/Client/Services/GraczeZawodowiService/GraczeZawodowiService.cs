@@ -1,13 +1,17 @@
-﻿using System.Net.Http.Json;
+﻿using Microsoft.AspNetCore.Components;
+using System.Net.Http.Json;
+using static System.Net.WebRequestMethods;
 
 namespace LoLInfoSQL.Client.Services.GraczeZawodowiService
 {
     public class GraczeZawodowiService : IGraczeZawodowiService
     {
         private readonly HttpClient http;
-        public GraczeZawodowiService(HttpClient http)
+        private readonly NavigationManager navigationManager;
+        public GraczeZawodowiService(HttpClient http, NavigationManager navigationManager)
         {
             this.http = http;
+            this.navigationManager = navigationManager;
         }
         public List<GraczeZawodowi> ProPlayers { get; set; } = new List<GraczeZawodowi>();
 
@@ -31,6 +35,31 @@ namespace LoLInfoSQL.Client.Services.GraczeZawodowiService
             var result = await http.GetFromJsonAsync<List<GraczeZawodowi>>($"api/graczezawodowi/Search/{searchText}");
             if (result != null)
                 ProPlayers = result;
+        }
+
+        private async Task SetProPlayers(HttpResponseMessage result)
+        {
+            var response = await result.Content.ReadFromJsonAsync<List<GraczeZawodowi>>();
+            ProPlayers = response;
+            navigationManager.NavigateTo("graczezawodowi");
+        }
+
+        public async Task CreateProPlayer(GraczeZawodowi proplayer)
+        {
+            var result = await http.PostAsJsonAsync("api/graczezawodowi", proplayer);
+            await SetProPlayers(result);
+        }
+
+        public async Task UpdateProPlayer(GraczeZawodowi proplayer)
+        {
+            var result = await http.PutAsJsonAsync($"api/graczezawodowi/{proplayer.Nick}", proplayer);
+            await SetProPlayers(result);
+        }
+
+        public async Task DeleteProPlayer(string nick)
+        {
+            var result = await http.DeleteAsync($"api/graczezawodowi/{nick}");
+            await SetProPlayers(result);
         }
     }
 }

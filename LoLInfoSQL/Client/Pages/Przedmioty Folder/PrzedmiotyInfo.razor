@@ -1,8 +1,9 @@
 ﻿@page "/przedmioty/{name}"
 @inject IPrzedmiotyService PrzedmiotyService
+@inject NavigationManager NavigationManager
 
 <PageTitle>@item.Nazwa</PageTitle>
-<h3>@item.Nazwa</h3>
+<h3>@item.Nazwa <button class="btn btn-primary" @onclick="(() => ShowEditItem(item.Nazwa))"><i class="oi oi-pencil"></i></button></h3>
 
 <br />
 
@@ -47,5 +48,10 @@
     protected override async Task OnParametersSetAsync()
     {
         item = await PrzedmiotyService.GetSingleItem(name);
+    }
+
+    void ShowEditItem(string Name)
+    {
+        NavigationManager.NavigateTo($"przedmioty/edit/{Name}");
     }
 }
