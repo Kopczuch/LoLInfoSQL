@@ -25,6 +25,6 @@ namespace LoLInfoSQL.Shared.Models
         public virtual Bohaterowie? UlubionyBohaterNavigation { get; set; }
         public virtual DaneLogowanium DaneLogowanium { get; set; } = null!;
 
-        public virtual ICollection<Gry> GryIdMeczus { get; set; }
+        public virtual ICollection<Gry>? GryIdMeczus { get; set; }
     }
 }

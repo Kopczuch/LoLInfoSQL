@@ -45,6 +45,7 @@ namespace LoLInfoSQL.Server.Controllers
             dbPlayer.Dywizja = player.Dywizja;
             dbPlayer.Poziom = player.Poziom;
             dbPlayer.UlubionyBohater = player.UlubionyBohater;
+            
 
             await context.SaveChangesAsync();
 
