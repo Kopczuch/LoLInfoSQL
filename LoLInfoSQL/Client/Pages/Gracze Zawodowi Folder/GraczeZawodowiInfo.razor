@@ -4,7 +4,13 @@
 
 <PageTitle>@proplayer.Nick</PageTitle>
 					
-<h3>@proplayer.ImieINazwisko - "@proplayer.Nick" <button class="btn btn-primary" @onclick="(() => ShowEditProPlayer(proplayer.Nick))"><i class="oi oi-pencil"></i></button></h3>
+<h3>@proplayer.ImieINazwisko - "@proplayer.Nick" 
+    	<AuthorizeView Roles="Administrator">
+		<Authorized>
+            <button class="btn btn-primary" @onclick="(() => ShowEditProPlayer(proplayer.Nick))"><i class="oi oi-pencil"></i></button>
+		</Authorized>
+	</AuthorizeView>
+    </h3>
 <br />
 
 <style>

@@ -1,6 +1,7 @@
 ﻿@page "/gracze/{nick}"
 @inject IGraczeService GraczeService
 @inject NavigationManager NavigationManager
+@attribute [Authorize(Roles = "Administrator, User")]
 
 <PageTitle>Moje dane</PageTitle>
 

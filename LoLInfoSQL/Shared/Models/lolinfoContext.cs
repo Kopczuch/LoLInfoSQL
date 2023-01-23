@@ -129,9 +129,9 @@ namespace LoLInfoSQL.Shared.Models
                     .HasMaxLength(20)
                     .HasColumnName("nick");
 
-                entity.Property(e => e.DataOstatniegoZalogowania)
-                    .HasColumnType("datetime")
-                    .HasColumnName("data_ostatniego_zalogowania");
+                entity.Property(e => e.Rola)
+                    .HasMaxLength(30)
+                    .HasColumnName("rola");
 
                 entity.Property(e => e.Haslo)
                     .HasMaxLength(100)

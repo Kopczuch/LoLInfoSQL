@@ -1,5 +1,7 @@
 ﻿@page "/druzyny/edit/{id}"
 @page "/druzyny/edit"
+@attribute [Authorize(Roles = "Administrator")]
+
 
 @inject IDruzynyService DruzynyService
 

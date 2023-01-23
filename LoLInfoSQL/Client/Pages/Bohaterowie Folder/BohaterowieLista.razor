@@ -3,9 +3,11 @@
 @inject NavigationManager NavigationManager
 
 <PageTitle>Bohaterowie</PageTitle>
-<h3>Bohaterowie <button class="btn btn-primary" @onclick="CreateNewChampion">Dodaj bohatera</button></h3>
-
-
+<h3>Bohaterowie <AuthorizeView Roles="Administrator">
+	<Authorized>
+		<button class="btn btn-primary" @onclick="CreateNewChampion">Dodaj bohatera</button>
+	</Authorized>
+</AuthorizeView></h3>
 
 <BlazoredTypeahead SearchMethod="@SearchChampion"
 					TValue="Bohaterowie"
