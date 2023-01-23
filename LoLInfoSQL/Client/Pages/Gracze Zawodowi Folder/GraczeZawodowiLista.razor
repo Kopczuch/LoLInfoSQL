@@ -3,7 +3,13 @@
 @inject NavigationManager NavigationManager
 
 <PageTitle>Pro Players</PageTitle>
-<h3>Gracze Zawodowi <button class="btn btn-primary" @onclick="CreateNewProPlayer">Dodaj gracza zawodowego</button></h3>
+<h3>Gracze Zawodowi 
+	<AuthorizeView Roles="Administrator">
+		<Authorized>
+			<button class="btn btn-primary" @onclick="CreateNewProPlayer">Dodaj gracza zawodowego</button>
+		</Authorized>
+	</AuthorizeView>
+</h3>
 
 <BlazoredTypeahead SearchMethod="@SearchProPlayer"
 					TValue="GraczeZawodowi"

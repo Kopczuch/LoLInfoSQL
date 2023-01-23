@@ -3,8 +3,13 @@
 @inject NavigationManager NavigationManager
 
 <PageTitle>@item.Nazwa</PageTitle>
-<h3>@item.Nazwa <button class="btn btn-primary" @onclick="(() => ShowEditItem(item.Nazwa))"><i class="oi oi-pencil"></i></button></h3>
-
+<h3>@item.Nazwa 
+    <AuthorizeView Roles="Administrator">
+		<Authorized>
+            <button class="btn btn-primary" @onclick="(() => ShowEditItem(item.Nazwa))"><i class="oi oi-pencil"></i></button>
+		</Authorized>
+	</AuthorizeView>
+</h3>
 <br />
 
 <style>

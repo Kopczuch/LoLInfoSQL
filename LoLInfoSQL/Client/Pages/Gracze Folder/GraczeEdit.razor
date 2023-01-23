@@ -1,6 +1,8 @@
 ﻿@page "/gracze/edit/{nick}"
 @inject IGraczeService GraczeService
 @inject IBohaterowieService BohaterowieService
+@attribute [Authorize(Roles = "Administrator, User")]
+
 
 <PageTitle>Edit</PageTitle>
 <h3>Edit @player.Nick</h3>

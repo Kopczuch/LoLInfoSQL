@@ -3,7 +3,13 @@
 @inject NavigationManager NavigationManager
 
 <PageTitle>@champion.Nazwa</PageTitle>
-<h3>@champion.Nazwa - @champion.Tytuł <button class="btn btn-primary" @onclick="(() => ShowEditChampion(champion.Nazwa))"><i class="oi oi-pencil"></i></button></h3>
+<h3>@champion.Nazwa - @champion.Tytuł 
+    <AuthorizeView Roles="Administrator">
+        <Authorized>
+            <button class="btn btn-primary" @onclick="(() => ShowEditChampion(champion.Nazwa))"><i class="oi oi-pencil"></i></button>
+        </Authorized>
+    </AuthorizeView>
+</h3>
 <h5>@champion.Klasa</h5>
 <br />
 

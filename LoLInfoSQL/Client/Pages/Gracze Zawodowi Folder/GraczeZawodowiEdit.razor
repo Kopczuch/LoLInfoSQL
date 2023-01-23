@@ -1,5 +1,6 @@
 ﻿@page "/graczezawodowi/edit/{nick}"
 @page "/graczezawodowi/edit"
+@attribute [Authorize(Roles = "Administrator")]
 
 @inject IGraczeZawodowiService GraczeZawodowiService
 @inject IBohaterowieService BohaterowieService

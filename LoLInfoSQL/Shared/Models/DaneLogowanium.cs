@@ -7,7 +7,7 @@ namespace LoLInfoSQL.Shared.Models
     {
         public string Nick { get; set; } = null!;
         public string Haslo { get; set; } = null!;
-        public DateTime DataOstatniegoZalogowania { get; set; }
+        public string Rola { get; set; }
 
         public virtual Gracze NickNavigation { get; set; } = null!;
     }

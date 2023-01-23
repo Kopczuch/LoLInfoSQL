@@ -3,7 +3,13 @@
 @inject NavigationManager NavigationManager
 
 <PageTitle>Drużyny</PageTitle>
-<h3>Drużyny <button class="btn btn-primary" @onclick="CreateNewTeam">Dodaj drużynę</button></h3>
+<h3>Drużyny 
+	<AuthorizeView Roles="Administrator">
+		<Authorized>
+			<button class="btn btn-primary" @onclick="CreateNewTeam">Dodaj drużynę</button>
+		</Authorized>
+	</AuthorizeView>
+</h3>
 
 <BlazoredTypeahead SearchMethod="@SearchTeam"
 				   TValue="Druzyny"

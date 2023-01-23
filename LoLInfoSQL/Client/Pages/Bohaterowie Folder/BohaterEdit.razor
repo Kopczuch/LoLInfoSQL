@@ -1,6 +1,7 @@
 ﻿@page "/bohaterowie/edit/{name}"
 @page "/bohaterowie/edit"
 @inject IBohaterowieService BohaterowieService
+@attribute [Authorize(Roles = "Administrator")]
 
 @if (name == null)
 {
