@@ -54,7 +54,8 @@ namespace LoLInfoSQL.Client.Services.DruzynyService
         public async Task CreateTeam(Druzyny team)
         {
             var result = await http.PostAsJsonAsync("api/druzyny", team);
-            await SetTeams(result);
+            //await SetTeams(result);
+            navigationManager.NavigateTo("druzyny");
         }
 
         public async Task UpdateTeam(Druzyny team)

@@ -39,21 +39,23 @@ namespace LoLInfoSQL.Client.Services.GraczeZawodowiService
 
         private async Task SetProPlayers(HttpResponseMessage result)
         {
-            var response = await result.Content.ReadFromJsonAsync<List<GraczeZawodowi>>();
-            ProPlayers = response;
+            //var response = await result.Content.ReadFromJsonAsync<List<GraczeZawodowi>>();
+            ProPlayers = await result.Content.ReadFromJsonAsync<List<GraczeZawodowi>>();
             navigationManager.NavigateTo("graczezawodowi");
         }
 
         public async Task CreateProPlayer(GraczeZawodowi proplayer)
         {
             var result = await http.PostAsJsonAsync("api/graczezawodowi", proplayer);
-            await SetProPlayers(result);
+            //await SetProPlayers(result);
+            navigationManager.NavigateTo("graczezawodowi");
         }
 
         public async Task UpdateProPlayer(GraczeZawodowi proplayer)
         {
             var result = await http.PutAsJsonAsync($"api/graczezawodowi/{proplayer.Nick}", proplayer);
             await SetProPlayers(result);
+            navigationManager.NavigateTo("graczezawodowi");
         }
 
         public async Task DeleteProPlayer(string nick)

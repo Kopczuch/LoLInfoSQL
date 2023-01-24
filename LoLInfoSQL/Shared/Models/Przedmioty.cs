@@ -14,6 +14,7 @@ namespace LoLInfoSQL.Shared.Models
         }
 
         public int IdPrzed { get; set; }
+
         [Required (ErrorMessage = "Nazwa jest wymagana.")]
         public string Nazwa { get; set; } = null!;
 

@@ -46,6 +46,8 @@ namespace LoLInfoSQL.Shared.Models
 
         [Required(ErrorMessage = "Ikona jest wymagana.")]
         public string Ikona { get; set; } = null!;
+
+        [Required (ErrorMessage = "Klasa jest wymagana.")]
         public string Klasa { get; set; } = null!;
 
         [JsonIgnore]

@@ -20,11 +20,21 @@ namespace LoLInfoSQL.Shared.Models
 
         [Required(ErrorMessage = "Kraj jest wymagany.")]
         public string Kraj { get; set; } = null!;
+
+        [Required(ErrorMessage = "Rola jest wymagana.")]
         public string Rola { get; set; } = null!;
+
+        [Required(ErrorMessage = "Rezydencja jest wymagana.")]
         public string Rezydencja { get; set; } = null!;
         public string? Zdjecie { get; set; }
+
+        [Required(ErrorMessage = "Data urodzin jest wymagana.")]
         public DateTime? DataUrodzin { get; set; }
+
+        [Required(ErrorMessage = "Id drużyny jest wymagana.")]
         public string? IdDruzyny { get; set; } = null!;
+
+
         public string? UlubionyBohater { get; set; }
 
         public virtual Druzyny? IdDruzynyNavigation { get; set; } = null!;

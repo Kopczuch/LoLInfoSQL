@@ -61,7 +61,7 @@ namespace LoLInfoSQL.Server.Controllers
             context.Przedmioties.Add(item);
             await context.SaveChangesAsync();
 
-            return Ok(item);
+            return Ok(await GetDbItems());
         }
 
         [HttpPut("{name}")]

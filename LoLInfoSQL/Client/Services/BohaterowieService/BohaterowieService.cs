@@ -47,7 +47,8 @@ namespace LoLInfoSQL.Client.Services.BohaterowieService
         public async Task CreateChampion(Bohaterowie champion)
         {
             var result = await http.PostAsJsonAsync("api/bohaterowie", champion);
-            await SetChampions(result);
+            //await SetChampions(result);
+            navigationManager.NavigateTo("bohaterowie");
         }
 
         public async Task UpdateChampion(Bohaterowie champion)

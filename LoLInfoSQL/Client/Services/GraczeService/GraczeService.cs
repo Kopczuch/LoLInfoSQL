@@ -28,13 +28,14 @@ namespace LoLInfoSQL.Client.Services.GraczeService
         {
             var response = await result.Content.ReadFromJsonAsync<List<Gracze>>();
             Players = response;
-            navigationManager.NavigateTo("bohaterowie");
+            //navigationManager.NavigateTo("/");
         }
 
         public async Task UpdatePlayer(Gracze player)
         {
             var result = await http.PutAsJsonAsync($"api/gracze/edit/{player.Nick}", player);
             await SetPlayers(result);
+            navigationManager.NavigateTo($"/gracze/{player.Nick}");
         }
     }
 }

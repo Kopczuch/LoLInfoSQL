@@ -52,7 +52,7 @@ namespace LoLInfoSQL.Server.Controllers
 			context.Bohaterowies.Add(champion);
 			await context.SaveChangesAsync();
 
-			return Ok(champion);
+			return Ok(await GetDbChampions());
 		}
 
         [HttpPut("{name}")]

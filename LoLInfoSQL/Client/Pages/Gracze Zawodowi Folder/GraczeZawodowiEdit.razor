@@ -48,46 +48,59 @@ else
 	<div>
 		<label for="dataurodzenia">Data urodzenia</label>
 		<InputDate id="dataurodzenia" @bind-Value="proplayer.DataUrodzin" class="form-control"></InputDate>
+		<ValidationMessage For="@(() => proplayer.DataUrodzin)" />
 	</div>
 	<div>
 		<label for="rezydencja">Rezydencja</label>
 		<InputSelect id="rezydencja" @bind-Value="proplayer.Rezydencja" class="form-control">
+			<option value="0">Wybierz</option>
 			@foreach (var residency in residencies)
 			{
 				<option value="@residency">@residency</option>
 			}
 		</InputSelect>
+		<ValidationMessage For="@(() => proplayer.Rezydencja)" />
 	</div>
 	<div>
 		<label for="iddruzyny">Id drużyny</label>
 		<InputSelect id="iddruzyny" @bind-Value="proplayer.IdDruzyny" class="form-control">
+			<option value="0">Wybierz</option>
 			@foreach (var team in teamsList)
 			{
 				<option value="@team.IdDruzyny">@team.IdDruzyny</option>
 			}
 		</InputSelect>
+		<ValidationMessage For="@(() => proplayer.IdDruzyny)" />
 	</div>
 	<div>
 		<label for="rola">Rola</label>
 		<InputSelect id="rola" @bind-Value="proplayer.Rola" class="form-control">
+			<option value="0">Wybierz</option>
 			@foreach (var role in rolesList)
 			{
 				<option value="@role">@role</option>
 			}
 		</InputSelect>
+		<ValidationMessage For="@(() => proplayer.Rola)" />
 	</div>
 	<div>
 		<label for="ulubionybohater">Ulubiony bohater</label>
 		<InputSelect id="ulubionybohater" @bind-Value="proplayer.UlubionyBohater" class="form-control">
+			<option value="0">Wybierz</option>
 			@foreach (var champion in championsList)
 			{
 				<option value="@champion.Nazwa">@champion.Nazwa</option>
 			}
 		</InputSelect>
+		<ValidationMessage For="@(() => proplayer.UlubionyBohater)" />
 	</div>
 	<br />
-	<button type="submit" class="btn btn-primary" @onclick="HandleValidSubmit">@btnText</button>
-	<button type="button" class="btn btn-danger" @onclick="DeleteProPlayer">Usuń gracza zawodowego</button>
+	<button type="submit" class="btn btn-primary" @onclick="HandleValidSubmit" disabled="@(!context.Validate())">@btnText</button>
+	@if(nick != null)
+	{
+		<button type="button" class="btn btn-danger" @onclick="DeleteProPlayer">Usuń gracza zawodowego</button>
+
+	}
 </EditForm>
 
 
@@ -156,6 +169,7 @@ else
 	{
 		if (nick == null)
 		{
+			
 			await GraczeZawodowiService.CreateProPlayer(proplayer);
 		}
 		else

@@ -13,6 +13,7 @@ namespace LoLInfoSQL.Shared.Models
             Turniejes = new HashSet<Turnieje>();
         }
 
+        [Required (ErrorMessage = "ID jest wymagane.")]
         public string IdDruzyny { get; set; } = null!;
 
         [Required (ErrorMessage = "Nazwa jest wymagana.")]
@@ -21,6 +22,7 @@ namespace LoLInfoSQL.Shared.Models
         [Required (ErrorMessage = "Opis jest wymagany.")]
         public string Opis { get; set; } = null!;
 
+        [Required (ErrorMessage = "Liga jest wymagana.")]
         public string Liga { get; set; } = null!;
 
         [Required(ErrorMessage = "Logo jest wymagane.")]

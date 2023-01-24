@@ -1,12 +1,17 @@
-﻿@page "/gracze/{nick}"
+﻿@using MySql.Data.MySqlClient;
+@using System.Data;
+@using MySql.Data;
+
+@page "/gracze/{nick}"
 @inject IGraczeService GraczeService
 @inject NavigationManager NavigationManager
-@attribute [Authorize(Roles = "Administrator, User")]
 
+@attribute [Authorize(Roles = "Administrator, User")]
 <PageTitle>Moje dane</PageTitle>
 
 
-<h3>@player.Nick <button class="btn btn-primary" @onclick="(() => ShowEditPlayer(player.Nick))"><i class="oi oi-pencil"></i></button></h3>
+
+<h3>@player.Nick</h3>
 
 
 <div class="table">
@@ -70,18 +75,70 @@
 
 @code
 {
+    //public override System.Data.CommandType CommandType { get; set; }
+
+    //public GraczeInfo(CommandType commandType)
+    //{
+    //    CommandType = commandType;
+    //}
+
     [Parameter]
     public string? nick { get; set; }
 
+    public float wr { get; set; }
+
     Gracze player = new Gracze();
 
-	protected override async Task OnParametersSetAsync()
-	{
-		player = await GraczeService.GetPlayer(nick);
-	}
+    protected override async Task OnParametersSetAsync()
+    {
+        player = await GraczeService.GetPlayer(nick);
+
+        if (nick != null)
+        {
+            //CalculateWr("getWinPercentage", nick);
+
+        }
+    }
 
     void ShowEditPlayer(string nick)
     {
         NavigationManager.NavigateTo($"gracze/edit/{nick}");
     }
+
+    static void CalculateWr(string functionName, string nick)
+    {
+        string connectionString = "server=127.0.0.1;uid=root;pwd=lolinfodb_root;database=lolinfo";
+
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        {
+            if (string.IsNullOrEmpty(functionName))
+            {
+                throw new ArgumentException("Function name cannot be null or empty", "functionName");
+            }
+
+            if (string.IsNullOrEmpty(nick))
+            {
+                throw new ArgumentException("Nick cannot be null or empty", "nick");
+            }
+
+            connection.Open();
+            using (MySqlCommand command = new MySqlCommand(functionName, connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = functionName;
+                command.Connection = connection;
+                command.Parameters.AddWithValue("@nick", nick);
+                command.ExecuteNonQuery();
+
+                //command.CommandType = CommandType.Text;
+                //command.CommandText = "CALL " + functionName + "(@nick)";
+                //command.Parameters.AddWithValue("@nick", nick);
+                //command.ExecuteNonQuery();
+            }
+
+            connection.Close();
+        }
+    }
+
+  
 }

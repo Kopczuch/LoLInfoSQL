@@ -55,7 +55,8 @@ namespace LoLInfoSQL.Client.Services.PrzedmiotyService
         public async Task CreateItem(Przedmioty item)
         {
             var result = await http.PostAsJsonAsync("api/przedmioty", item);
-            await SetItems(result);
+            //await SetItems(result);
+            navigationManager.NavigateTo("przedmioty");
         }
 
         public async Task UpdateItem(Przedmioty item)

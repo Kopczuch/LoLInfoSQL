@@ -47,8 +47,13 @@ else
 		<InputNumber id="wartoscsprzedazy" @bind-Value="item.WartoscSprzedazy" class="form-control" min=0></InputNumber>
 		<ValidationMessage For="@(() => item.WartoscSprzedazy)" />
 	</div>
-	<button type="submit" class="btn btn-primary" @onclick="HandleValidSubmit">@btnText</button>
-	<button type="button" class="btn btn-danger" @onclick="DeleteTeam">Usuń przedmiot</button>
+	<br />
+	<button type="submit" class="btn btn-primary" @onclick="HandleValidSubmit" disabled="@(!context.Validate())">@btnText</button>
+	@if(name != null)
+	{
+		<button type="button" class="btn btn-danger" @onclick="DeleteTeam">Usuń przedmiot</button>
+
+	}
 </EditForm>
 
 @code

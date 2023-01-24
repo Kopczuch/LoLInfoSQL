@@ -91,11 +91,13 @@ else
 	<div>
 		<label for="klasa">Klasa</label>
 		<InputSelect id="klasa" @bind-Value="champion.Klasa" class="form-control">
+			<option value="0">Wybierz</option>
 			@foreach (var role in rolesList)
 			{
 				<option value="@role">@role</option>
 			}
 		</InputSelect>
+		<ValidationMessage For="@(() => champion.Klasa)" />
 	</div>
 	<br />
 	<div>
@@ -116,8 +118,11 @@ else
 		}*@
 
 	</div>
-	<button type="submit" class="btn btn-primary" @onclick="HandleValidSubmit">@btnText</button>
-	<button type="button" class="btn btn-danger" @onclick="DeleteChampion">Usuń bohatera</button>
+	<button type="submit" class="btn btn-primary" @onclick="HandleValidSubmit" disabled="@(!context.Validate())">@btnText</button>
+	@if(name != null)
+	{
+		<button type="button" class="btn btn-danger" @onclick="DeleteChampion">Usuń bohatera</button>
+	}
 </EditForm>
 
 <br />
@@ -129,6 +134,7 @@ else
 @code
 {
 	string btnText = string.Empty;
+
 
 	[Parameter]
 	public string? name { get; set; }
@@ -163,16 +169,20 @@ else
 		}
 	}
 
+
+
 	async Task HandleValidSubmit()
 	{
 		if(name == null)
 		{
 			await BohaterowieService.CreateChampion(champion);
+
 		}
 		else
 		{
 			await BohaterowieService.UpdateChampion(champion);
 		}
+
 
 	}
 
